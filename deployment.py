@@ -1,40 +1,31 @@
 import streamlit as st
 import torch
-from PIL import Image
-import prediction  # Import the prediction.py file
-from io import BytesIO
+import torchvision.models as models
+from torch import nn
+import prediction
 
-# Device setup
+# Load your trained model
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-# Load the model 
-model = torch.load('./models/disease_classify_model.pth')
-model.eval()
+# Define the model architecture (adjust based on your trained model)
+weights = models.EfficientNet_B0_Weights.DEFAULT
+model = models.efficientnet_b0(weights=weights)
+output_shape = 2  
+model.classifier = nn.Sequential(
+    nn.Dropout(p=0.2, inplace=True),
+    nn.Linear(in_features=1280, out_features=output_shape, bias=True)
+)
 
-# List of class names
-class_names = ['Caries', 'Gingivitis'] 
+# Load the trained model weights
+model.load_state_dict(torch.load('./models/disease_classify_model.pth'))
+model.eval()  # Set the model to evaluation mode
+model.to(device)
 
+# List of class names (update this based on your dataset)
+class_names = ['Caries', 'Gingivitis']
 
-st.title("Image Classifier")
+# Call the prediction function
+st.title("Disease Classifier")
 
-st.write("Upload an image for classification:")
-
-# Image uploader
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
-
-if uploaded_file is not None:
-    # Open image
-    image = Image.open(uploaded_file)
-
-    # Predict and display result
-
-    image_path = BytesIO(uploaded_file.read()) 
-
-    # Call the prediction function 
-    prediction.pred_and_plot_image(
-        model=model,
-        class_names=class_names,
-        image_path=image_path,
-        device=device
-    )
-    st.pyplot()  # To display the image and the plot 
+# Call the modified prediction function with Streamlit
+prediction.pred_and_plot_images_streamlit(model, class_names, device=device)
