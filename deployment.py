@@ -7,15 +7,13 @@ from io import BytesIO
 # Device setup
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-# Load the model (ensure you load the trained model in the correct way)
-# model = torch.load('model.pth')  # Example to load your model
+# Load the model 
 model = torch.load('./models/disease_classify_model.pth')
 model.eval()
 
-# List of class names (make sure these match your model's output classes)
+# List of class names
 class_names = ['Caries', 'Gingivitis'] 
 
-# Streamlit UI
 
 st.title("Image Classifier")
 
@@ -29,14 +27,14 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
 
     # Predict and display result
-    # Use the pred_and_plot_image function from your prediction.py
-    image_path = BytesIO(uploaded_file.read())  # Convert uploaded file to a readable format
 
-    # Call the prediction function from your 'prediction.py'
+    image_path = BytesIO(uploaded_file.read()) 
+
+    # Call the prediction function 
     prediction.pred_and_plot_image(
         model=model,
         class_names=class_names,
         image_path=image_path,
         device=device
     )
-    st.pyplot()  # To display the image and the plot in the Streamlit app
+    st.pyplot()  # To display the image and the plot 
