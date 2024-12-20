@@ -2,6 +2,9 @@
 
 This repository contains a machine learning model for disease classification, implemented using PyTorch and deployed with Streamlit.
 
+[Download the video](./readme_assets/video.mp4)
+
+
 ## Repository Structure
 
 - `models/`: Contains the trained model files.
@@ -54,3 +57,7 @@ Open your web browser and navigate to the provided local URL to interact with th
 
 ### Prediction Function
 The `prediction.py` script contains the function to make predictions using the trained model. It is used within the Streamlit app to display predictions and their probabilities
+
+![Predictions](./readme_assets/predictions.png)
+
+![Confusion Matrix](./readme_assets/confusion_matrix.png)
