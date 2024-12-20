@@ -7,7 +7,7 @@ import prediction
 # Load your trained model
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-# Define the model architecture (adjust based on your trained model)
+# Define the model architecture
 weights = models.EfficientNet_B0_Weights.DEFAULT
 model = models.efficientnet_b0(weights=weights)
 output_shape = 2  
@@ -21,7 +21,7 @@ model.load_state_dict(torch.load('./models/disease_classify_model.pth'))
 model.eval()  # Set the model to evaluation mode
 model.to(device)
 
-# List of class names (update this based on your dataset)
+# List of class names 
 class_names = ['Caries', 'Gingivitis']
 
 # Call the prediction function
